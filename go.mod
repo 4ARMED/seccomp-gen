@@ -1,6 +1,8 @@
-module github.com/blacktop/seccomp-gen
+module github.com/4armed/seccomp-gen
 
-go 1.17
+go 1.18
+
+replace github.com/blacktop/seccomp-gen => github.com/4armed/seccomp-gen v1.2.0
 
 require (
 	github.com/apex/log v1.1.0
