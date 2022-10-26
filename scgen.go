@@ -64,7 +64,7 @@ func main() {
 	var re *regexp.Regexp
 
 	if *processSyslog {
-		re = regexp.MustCompile(`syscall=([0-9])+`)
+		re = regexp.MustCompile(`syscall=([0-9]+)`)
 	} else {
 		re = regexp.MustCompile(`^[a-zA-Z_]+\(`)
 	}
@@ -75,8 +75,11 @@ func main() {
 		line := scanner.Text()
 		if *processSyslog {
 			matches := re.FindStringSubmatch(line)
+			if *verbosePtr {
+				log.Infof("matched syscall %s", matches[1])
+			}
 			if len(matches) > 0 {
-				i, _ := strconv.Atoi(matches[0])
+				i, _ := strconv.Atoi(matches[1])
 				if sc, ok := syscalls.IsValidByNumber(i); ok {
 					scs = unique(scs, sc)
 				}
