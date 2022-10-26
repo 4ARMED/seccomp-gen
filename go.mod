@@ -2,7 +2,7 @@ module github.com/4armed/seccomp-gen
 
 go 1.18
 
-replace github.com/blacktop/seccomp-gen => github.com/4armed/seccomp-gen v1.2.1
+replace github.com/blacktop/seccomp-gen => github.com/4armed/seccomp-gen v1.2.2
 
 require (
 	github.com/apex/log v1.1.0
