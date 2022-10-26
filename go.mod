@@ -1,4 +1,4 @@
-module github.com/blacktop/seccomp-gen
+module github.com/4armed/seccomp-gen
 
 go 1.18
 
