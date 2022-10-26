@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"runtime"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/apex/log"
@@ -57,17 +58,35 @@ func main() {
 	var scs []string
 
 	verbosePtr := flag.Bool("verbose", false, "verbose output")
+	processSyslog := flag.Bool("syslog", false, "process syslog output")
 	flag.Parse()
 
-	re := regexp.MustCompile(`^[a-zA-Z_]+\(`)
+	var re *regexp.Regexp
+
+	if *processSyslog {
+		re = regexp.MustCompile(`syscall=([0-9])+`)
+	} else {
+		re = regexp.MustCompile(`^[a-zA-Z_]+\(`)
+	}
 
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for scanner.Scan() {
-		sc = strings.TrimRight(re.FindString(scanner.Text()), "(")
-		if len(sc) > 0 {
-			if syscalls.IsValid(sc) {
-				scs = unique(scs, sc)
+		line := scanner.Text()
+		if *processSyslog {
+			matches := re.FindStringSubmatch(line)
+			if len(matches) > 0 {
+				i, _ := strconv.Atoi(matches[0])
+				if sc, ok := syscalls.IsValidByNumber(i); ok {
+					scs = unique(scs, sc)
+				}
+			}
+		} else {
+			sc = strings.TrimRight(re.FindString(line), "(")
+			if len(sc) > 0 {
+				if syscalls.IsValid(sc) {
+					scs = unique(scs, sc)
+				}
 			}
 		}
 	}
