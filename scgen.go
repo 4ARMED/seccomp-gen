@@ -14,10 +14,10 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/4armed/seccomp-gen/seccomp"
+	"github.com/4armed/seccomp-gen/seccomp/syscalls"
 	"github.com/apex/log"
 	clihander "github.com/apex/log/handlers/cli"
-	"github.com/blacktop/seccomp-gen/seccomp"
-	"github.com/blacktop/seccomp-gen/seccomp/syscalls"
 )
 
 var requiredSyscalls = []string{
